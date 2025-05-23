@@ -1,0 +1,50 @@
+
+# para executar o arquivo yml
+# docker-compose up -d
+
+
+# Instalar a extensão do waha no n8n
+# settings > community nodes > Install a community node > npm Package Name 
+# @devlikeapro/n8n-nodes-waha
+
+# adiciona um waha trigger
+
+# copiar o link de produção da trigger no n8n na variavel do waha
+# substituir localhost por host.docker.internal
+# excluir o container waha e rodar o comando docker-compose up -d
+
+# Configuraçõe do waha
+# em sessions clicar no play para iniciar a sessão
+# clicar no login para scanear o qr code
+# em sessions > configuration > webhook > url para adicionar a url de test, substituir localhost por host.docker.internal
+
+# adicionar um set para capturar mensagem
+# adicionar os campos session $json.session, from $json.payload.from, mensgem $json.payload.body, id_mensagem $json.payload.id
+
+# para visualizar a mensagem
+# adiciona um waha > send seen > credential to connect with > host url > http://host.docker.internal:3000
+# adicionar os campos session $json.session, chat id $json.from, message id $json.id_mensagem e apagar o valor de participant
+
+# para responder mensagem
+# adiciona um waha > send text message 
+# adicionar os campos session $('Edit Fields'),item.json.session, chat id $('Edit Fields'),item.json.from, text você digitou: $('Edit Fields'),item.json.mensagem
+
+# agente
+# adiconar um agente
+# em source for prompt mudar para define below, em prompt (user message) adicionar {{ $('Edit Fields').item.json.mensgem }} 
+# add option > system message adiciona a mensagem: Você deve responder as perguntas do cliente. Nome do cliente:  {{ $('WAHA Trigger').item.json.me.pushName }} Data de hoje: {{ $now }}
+
+# adicionar open ai
+# chat Model > open ai chat model > credential to connect with > API key
+
+# redis
+# criar nova conexão com redis em credential to connect > create a new credential
+# Usuario padrão default
+# senha minha_senha_segura
+# host redis_file
+# porta 6379
+# em session id selsecionar define below e adicionar {{ $('Edit Fields').item.json.from }} para ser usado como chave das conversas
+# session time to live e o tempo que vai mantes o historico e milissegundos
+# Em context windows length e a quantidade de historico que vai trazer
+
+

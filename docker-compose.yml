@@ -1,0 +1,69 @@
+
+# version: '3.8'
+
+services:
+
+  n8n_file:
+    image: n8nio/n8n:latest
+    container_name: n8n_file
+    # restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+    volumes:
+      - n8n_home:/home/node/.n8n
+    networks:
+      - minha_rede
+  
+  
+  waha_file:
+    image: devlikeapro/waha:latest
+    container_name: waha_file
+    # restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - WHATSAPP_DEFAULT_ENGINE=NOWEB
+      - WHATSAPP_HOOK_EVENTS=message
+      # - WHATSAPP_HOOK_URL=${DEPENDENCIA_URL}
+      - WHATSAPP_HOOK_URL=http://host.docker.internal:5678/webhook/64a2de0e-e41b-4597-9610-0d3084570a81/waha
+    volumes:
+      - waha_tmp:/tmp/
+    networks:
+      - minha_rede
+  
+  
+  redis:
+    image: redis:latest
+    container_name: redis_file
+    # restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - minha_rede
+  
+    # command: ["redis-server", "--appendonly", "yes"]
+    command: ["redis-server", "--requirepass", "minha_senha_segura", "--bind", "0.0.0.0"]
+
+
+  redis_commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis_commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379:0:minha_senha_segura
+    ports:
+      - "8081:8081"
+    networks:
+      - minha_rede
+
+volumes:
+  n8n_home:
+  waha_tmp:
+  redis_data:
+
+networks:
+  minha_rede:
+    driver: bridge

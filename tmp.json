@@ -1,0 +1,27 @@
+[
+    {
+        "order_code": "{plan_id}",
+        "delivery_date": "{data_entrega}",
+        "project_code": "{projectCode}",
+        "customer_code": "{customerCode}",
+        "address_code": "{addressCode}",
+        "status_code": "920",
+        "status_name": "INATIVO",
+        "order_products": [
+					{ 
+							"item_number":1,
+							"product_code": "{productCode}",
+							"product_name": "{productName}",
+							"quantity": {data_quantidade},
+							"price": {productPrice}
+					},
+					{ 
+							"item_number":2,
+							"product_code": "{data_servico_codigo}",
+							"product_name": "{data_servico_nome}"
+							"quantity": {data_quantidade},
+							"price": {data_servico_preco}
+					}
+				]
+		}
+]

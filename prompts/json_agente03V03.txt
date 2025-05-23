@@ -1,0 +1,51 @@
+[
+    {
+        "order_code": "V{plan_id}",
+        "delivery_date": "{data_entrega}",
+        "plant_code": "{plant_code}",
+        "project_code": "{projectCode}",
+        "project_name": "{projectName}",
+        "project_pincode": "1234",
+        "customer_code": "{customerCode}",
+        "customer_name": "{customerName}",
+        "customer_document": "{customerDocument}",
+        "customer_email": null,
+        "customer_number": "38255000",
+        "customer_note": null,
+				"address_code": "#18",
+        "address_street": "AV VITO GAGGIATO",
+        "address_number": "0",
+        "address_district": "INDUSTRIAL",
+        "address_complement": "SN",
+        "address_full": null,
+        "city_code": null,
+        "city_name": "SANTANA DO PARAISO",
+        "purchase_order": null,
+        "usage_code": null,
+        "usage_name": null,
+        "status_code": "920",
+        "status_name": "INATIVO",
+        "status_blocked": false,
+        "status_color": "#FF0000",
+        "internal_notes": "Some internal Notes you can add here.",
+        "customer_notes": "Some customer Notes you can add here.",
+        "display_price": true,
+        "tax_code": null,
+        "tax_name": null,
+        "tax_value": 0,
+        "seller_code": null,
+        "seller_name": null,
+        "order_products": [
+					{ 
+							"item_number":1,
+							"product_code": "{{ $('Loop_Project_ContactPhoneNumber').item.json.data.page_items[0].project_product[0].product.code }}",
+							"product_type": 1,
+							"product_name": "{{ $('Loop_Project_ContactPhoneNumber').item.json.data.page_items[0].project_product[0].product.name }}",
+							"product_list_price": 0,
+							"quantity": {data_quantidade},
+							"price": {{ $('Loop_Project_ContactPhoneNumber').item.json.data.page_items[0].project_product[0].price }},
+							"pump_order_code": null
+					}
+				]
+		}
+]
