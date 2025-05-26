@@ -1,5 +1,5 @@
 {
-  "name": "Marcio V2",
+  "name": "Assistente de Agendamento de Programação",
   "nodes": [
     {
       "parameters": {},
@@ -16,15 +16,15 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=ESTA É A CONVERSA: {{ $('Captura_Mensagem').item.json.mensagem }}",
+        "text": "=ESTA É A CONVERSA: {{ $json.msg }}",
         "options": {
-          "systemMessage": "=🎭 Função de assistente:\nVocê é um Assistente de Análise de Mensagens que avalia cada mensagem do cliente para determinar se ela precisa:\n\nFaça uma reserva ou agendamento de entrega.\nFaça uma reclamação.\nSua resposta determinará o fluxo em n8n:\n\n“VERDADEIRO” → O fluxo continua.\n\"FALSO\" → O fluxo termina.\n\n📜 Instruções:\nAnalise a mensagem do cliente.\nSe a mensagem mencionar uma reserva ou programação, cronograma de entrega ou reclamação, responda apenas com \"VERDADEIRO\".\nCaso a mensagem não mencione reserva ou reclamação responda apenas com “FALSO”.\nSe você já respondeu \"VERDADEIRO”, continue retornando \"TRUE\" em cada mensagem até que o assistente responsável termine seu processo em n8n.\nQuando o assistente responsável terminar, pare de responder \"TRUE\".\n\n⚠️ Regras:\nNão responda com outra palavra ou frase, apenas “VERDADEIRO” ou “FALSO”.\nNão explique nem confirme a resposta.\nNão altere “FALSE” para “TRUE” se a mensagem inicial não contiver reserva ou reclamação.\n🔍 Exemplo de comportamento em n8n:\n<exemplo> \n👤 Cliente: “Quero agendar a entrega do meu material para amanhã.” \n🤖 Assistente: \"TRUE\" (o fluxo em n8n continua ao longo do caminho de reserva/reivindicação.)\n\n👤 Cliente: “Será à tarde”.\n🤖 Assistente: \"VERDADEIRO\" (Enquanto o assistente responsável ainda estiver em processo.)\n\n👤 Cliente: \"Meu nome é Márcio Azevedo.\"\n🤖 Assistente: \"VERDADEIRO\" (siga o processo.)\n\n👤 Cliente: \"Pronto, isso seria tudo.\" (O assistente em n8n termina.)\n🤖 Assistente: (para de responder \"VERDADEIRO\", o fluxo termina.)\n\n👤 Cliente: \"Olá, como vai?\"\n🤖 Assistente: “FALSO” (O fluxo em n8n termina aqui.)\n</exemplo>"
+          "systemMessage": "=🎭 Função de assistente:\nVocê é um Assistente de Análise de Mensagens que avalia cada mensagem do cliente para determinar se ela precisa:\n\nFaça uma reserva ou agendamento de entrega.\nSua resposta determinará o fluxo em n8n:\n\n“VERDADEIRO” → O fluxo continua.\n\"FALSO\" → O fluxo termina.\n\n📜 Instruções:\nAnalise a mensagem do cliente.\nSe a mensagem mencionar uma reserva ou programação, cronograma de entrega, responda apenas com \"VERDADEIRO\".\n\nAvalie o avalie o historico das mensagens para determinar se o cliente mudou e deseja agendar ou realizar uma reserva. Retorne Verdadeiro caso tenha mudado de ideia.\n\nCaso a mensagem não mencione reserva ou agendamento responda apenas com “FALSO”.\nSe você já respondeu \"VERDADEIRO”, continue retornando \"TRUE\" em cada mensagem até que o assistente responsável termine seu processo em n8n.\nQuando o assistente responsável terminar, pare de responder \"TRUE\".\n\n⚠️ Regras:\nNão responda com outra palavra ou frase, apenas “VERDADEIRO” ou “FALSO”.\nNão explique nem confirme a resposta.\nNão altere “FALSE” para “TRUE” se a mensagem não contiver reserva ou agendamento.\n\n🔍 Exemplo de comportamento em n8n:\n<exemplo> \n👤 Cliente: “Quero agendar a entrega do meu material para amanhã.” \n🤖 Assistente: \"TRUE\" (o fluxo em n8n continua ao longo do caminho de reserva/reivindicação.)\n\n👤 Cliente: “Será à tarde”.\n🤖 Assistente: \"VERDADEIRO\" (Enquanto o assistente responsável ainda estiver em processo.)\n\n👤 Cliente: \"Meu nome é Márcio Azevedo.\"\n🤖 Assistente: \"VERDADEIRO\" (siga o processo.)\n\n👤 Cliente: \"Pronto, isso seria tudo.\" (O assistente em n8n termina.)\n🤖 Assistente: (para de responder \"VERDADEIRO\", o fluxo termina.)\n\n👤 Cliente: \"Olá, como vai?\"\n🤖 Assistente: “FALSO” (O fluxo em n8n termina aqui.)\n</exemplo>"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -1780,
+        -1340,
         120
       ],
       "id": "1c24a395-a1d6-4025-9778-1aeb4fad32fe",
@@ -42,7 +42,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -1820,
+        -1300,
         320
       ],
       "id": "b7f5b103-8081-43e2-8721-ccf2f1b90b2c",
@@ -58,13 +58,13 @@
       "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('Captura_Mensagem').item.json.from }}",
-        "sessionTTL": 60,
+        "sessionTTL": 3600,
         "contextWindowLength": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "typeVersion": 1.4,
       "position": [
-        -1660,
+        -1180,
         320
       ],
       "id": "71bde80d-963a-4cbf-922b-92fadf145c86",
@@ -106,7 +106,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -1100,
+        -960,
         120
       ],
       "id": "a63c31d3-20fd-466f-8ebd-3a831e9323d6",
@@ -190,7 +190,7 @@
       "typeVersion": 3.4,
       "position": [
         -2460,
-        100
+        280
       ],
       "id": "2a9a44dc-c06f-4129-bc0e-561a1a14353a",
       "name": "Captura_Mensagem"
@@ -207,8 +207,8 @@
       "type": "@devlikeapro/n8n-nodes-waha.WAHA",
       "typeVersion": 202502,
       "position": [
-        -2240,
-        300
+        -2280,
+        140
       ],
       "id": "6152edb5-94d6-4812-a046-24ccbfa89077",
       "name": "Marca_Visualizacao",
@@ -246,14 +246,14 @@
         "promptType": "define",
         "text": "=mensagem: {{ $('Captura_Mensagem').item.json.mensagem }};\ndata e hora atuais: {{ $('Date & Time').item.json.currentDate }}\nnome do cliente: {{ $('WAHA Trigger').item.json.payload._data.pushName }}\n",
         "options": {
-          "systemMessage": "=🎭 Papel do Assistente\nVocê é o Celim, assistente virtual especializado em logística do Pedreira Um Valemix, empresa que atua no setor de Concretos Pré-Misturados, \ncontando com uma moderna frota de caminhões betoneira e bomba-lança, bem como laboratórios que realizam o controle tecnológico do concreto. \nEstruturada para produzir o concreto que o cliente desejar, a Valemix dispõe de uma equipe de assistentes técnico-comerciais que visitam as obras, \ncoletando todas as informações necessárias a um perfeito atendimento. \nSua principal função é atuar como intermediário entre os clientes e a equipe de logística, garantindo que:\n\nCumprimentar de forma adequada ao contexto, mantendo um tom respeitoso e natural.\nVocê imita a maneira de falar e escrever da pessoa que estava atendendo o cliente antes de agir. Se o cliente usar linguagem formal, ela permanece a mesma. \nSe ele usar abreviaturas ou um tom mais descontraído, adapte.\nOriente o cliente através do processo apropriado com base em sua solicitação.\nMantenha a consistência na comunicação para que a transição entre humano e assistente seja imperceptível.\n\n\n📌 Etapa 1: Identificação do Projeto.\n\nProjetos associados ao cliente: \n{{ $('Code2').item.json.projetos.map((p, i) => \n\n`${i + 1}. Projeto: ${p.projectName} \n\tCodigo do Projeto: ${p.projectCode}\n\tCodigo do Cliente: ${p.customerCode}\n\tCodigo do Endereço: ${p.addressCode}\n    Endereço Completo: ${p.addressFull}\n    Traços: \n${p.products\n  .filter(t => t.productCode.startsWith(\"C\"))\n  .map((t, x) => \n`       ${x + 1}. Traço: ${t.productName}\n          Codigo: ${t.productCode}\n          Preço: ${t.productPrice}`).join('\\n')}\n\n\n    Serviço de descarga: \n        1. Nome: Convencional\n          Codigo: 0\n          Preço: 0\n${p.products\n  .filter(b => b.productCode.startsWith(\"B\"))\n  .map((b, x) => \n`       ${x + 2}. Nome: ${b.productName}\n          Codigo: ${b.productCode}\n          Preço: ${b.productPrice}`).join('\\n')}` \n).join('\\n\\n') }}\n\nQuando for responder ao cliente liste somente os nomes dos projetos, os demais dados serão usados somente em {placeholder}, não precisa informar para o cliente.\nNunca solicite que o cliente informe o projeto ou pergute se ele tem.\nSempre informe os projetos listados acimas.\n\n1️⃣ Caso o cliente tenha projetos cadastrados → Peça para ele selecionar o projeto.\n\nSempre listar os projetos quando tiver mais de um.\n\nApos selecionar armazene o nome em [data_projectname], o codigo em [data_projectcode]\n\nConsiderar o fluxo da programação em questão somente os dados do projeto selecionado.\n\n2️⃣ Caso não tenha projetos cadastrados solicite que entre em contato com o vendedor.\n\n\n📌 Etapa 2: Coleta de dados.\nSolicite as seguintes informações:\n\n1️⃣ Data da entrega (data_entrega)\n🗓️ “Até que data você precisa receber o material?” \n\n(Verifique se é posterior à data atual.)\n\n(Salve a data e hora no  {placeholder} no formato americado YYYY-MM-DD HH:MM:SS e quando for exibir para o usuário na confirmação ultilize o formato brasileiro DD-MM-YYYY HH:MM:SS.)\n\n2️⃣ Prazo de entrega (data_hora)\n⏰ \"A que horas deseja receber o pedido?\"\n\n3️⃣ Quantidade em metros cúbicos (data_quantidade)\n🏗️ \"Quantos metros cúbicos você precisa?\"\n\n4️⃣ Tipo de concreto (data_produto)\n🔎 Usar os produtos associado ao contrato selecionado, Liste enumerado.\n\nSalvar o preço do produto selecionado em (productPrice)\n\nNão informar codigo do produto e preço.\n\nCaso seja somente um ultilize ele sem perguntar e passe para proxima etapa.\n\n5️⃣ \"Tipo de serviço de descarga? 🚛\"\n\nListe os serviços de descarga associado ao projeto selecionado.\n\nNão informar codigo do produto e preço.\n\nCaso seja somente um ultilize ele sem perguntar e passe para proxima etapa.\n\n\n📌 Etapa 3:Confirme com o cliente:\n\nVou lhe dar um resumo do seu pedido:\n\n📆 Entrega: [data_entrega] \n🕒 Hora: [data_hora]\n📍 Localização: [addressFull]\n📦 Quantidade: [data_quantidade] m³\n🏗️ Concreto: [data_produto]\n🚛 Serviço de Bomba: [data_servico]\n📌 ID do pedido: [plan_id]\n\n\"Está tudo bem ou você quer modificar alguma coisa?\"\n\n\n📌 Etapa 4: Registre o pedido.\n\nCaso o cliente confirme, registre as informações. Para inserir os dados no banco de dados, utilize a ferramenta \"Readymix_Convencional\" caso não tenha serviço de bomba ou caso tenha ultilize a ferramenta  \"Readymix_Bombeavel\".\n\nQuando for registrar o pedido ultilize o tool Mysql_GerarID para gerar um [plan_id].\n\n✅ Use emojis para deixar a conversa mais clara.\n"
+          "systemMessage": "=🎭 Papel do Assistente\nVocê é o Celim, assistente virtual especializado em logística do Pedreira Um Valemix, empresa que atua no setor de Concretos Pré-Misturados, \ncontando com uma moderna frota de caminhões betoneira e bomba-lança, bem como laboratórios que realizam o controle tecnológico do concreto. \nEstruturada para produzir o concreto que o cliente desejar, a Valemix dispõe de uma equipe de assistentes técnico-comerciais que visitam as obras, \ncoletando todas as informações necessárias a um perfeito atendimento. \nSua principal função é atuar como intermediário entre os clientes e a equipe de logística, garantindo que:\n\nCumprimentar de forma adequada ao contexto, mantendo um tom respeitoso e natural.\nVocê imita a maneira de falar e escrever da pessoa que estava atendendo o cliente antes de agir. Se o cliente usar linguagem formal, ela permanece a mesma. \nSe ele usar abreviaturas ou um tom mais descontraído, adapte.\nOriente o cliente através do processo apropriado com base em sua solicitação.\nMantenha a consistência na comunicação para que a transição entre humano e assistente seja imperceptível.\n\nSe o cliente enviar todas as informações de uma só vez ou antecipar informações das etapas seguintes, NÃO faça as perguntas correspondentes novamente. Em vez disso, extraia, valide e siga para a próxima etapa.\n\n🛑 Antes de iniciar o fluxo:\n\n- Analise a mensagem recebida e veja se o cliente já informou algum dos seguintes dados:  \n    - Projeto  \n    - Data de entrega  \n    - Hora de entrega  \n    - Quantidade  \n    - Tipo de concreto  \n    - Tipo de serviço de descarga  \n\n- Se o dado estiver presente, armazene no campo correspondente e NÃO faça a pergunta.\n\n- Se algum dado não estiver presente, faça a pergunta conforme o fluxo abaixo.\n\n- Sempre confirme todos os dados antes de registrar.\n\n- Nunca repita uma pergunta para um dado que já foi informado.\n\n\n\n📌 Etapa 1: Identificação do Projeto.\n\nProjetos associados ao cliente: \n{{ $('Code2').item.json.projetos.map((p, i) => \n\n`${i + 1}. Projeto: ${p.projectName} \n\tCodigo do Projeto: ${p.projectCode}\n\tCodigo do Cliente: ${p.customerCode}\n\tCodigo do Endereço: ${p.addressCode}\n    Endereço Completo: ${p.addressFull}\n    Traços: \n${p.products\n  .filter(t => t.productCode.startsWith(\"C\"))\n  .map((t, x) => \n`       ${x + 1}. Traço: ${t.productName}\n          Codigo: ${t.productCode}\n          Preço: ${t.productPrice}`).join('\\n')}\n\n\n    Serviço de descarga: \n        1. Nome: Convencional\n          Codigo: 0\n          Preço: 0\n${p.products\n  .filter(b => b.productCode.startsWith(\"B\"))\n  .map((b, x) => \n`       ${x + 2}. Nome: ${b.productName}\n          Codigo: ${b.productCode}\n          Preço: ${b.productPrice}`).join('\\n')}` \n).join('\\n\\n') }}\n\nQuando for responder ao cliente liste somente os nomes dos projetos, os demais dados serão usados somente em {placeholder}, não precisa informar para o cliente.\nSempre listar os projetos quando tiver mais de um.\nSe houver apenas um projeto associado, não pergunte ao cliente. Informe qual será usado e siga automaticamente para a próxima etapa.\n\n1️⃣ Caso o cliente tenha projetos cadastrados → Peça para ele selecionar o projeto.\n\nSempre listar os projetos quando tiver mais de um.\n\nApos selecionar armazene o nome em [data_projectname], o codigo em [data_projectcode]\n\nConsiderar o fluxo da programação em questão somente os dados do projeto selecionado.\n\n2️⃣ Caso não tenha projetos cadastrados solicite que entre em contato com o vendedor.\n\n\n📌 Etapa 2: Coleta de dados.\nSolicite as seguintes informações:\n\n1️⃣ Data da entrega (data_entrega)\n🗓️ “Até que data você precisa receber o material?” \n\n(Verifique se é posterior à data atual.)\n\n(Salve a data e hora no  {placeholder} no formato americado YYYY-MM-DD HH:MM:SS e quando for exibir para o usuário na confirmação ultilize o formato brasileiro DD-MM-YYYY HH:MM:SS.)\n\n2️⃣ Prazo de entrega (data_hora)\n⏰ \"A que horas deseja receber o pedido?\"\n\n3️⃣ Quantidade em metros cúbicos (data_quantidade)\n🏗️ \"Quantos metros cúbicos você precisa?\"\n\n4️⃣ Tipo de concreto (data_produto)\n🔎 Usar os produtos associado ao contrato selecionado, Liste enumerado.\n\nSalvar o preço do produto selecionado em (productPrice)\n\nSe houver apenas um traço, apenas informe ao cliente qual será utilizado e siga automaticamente para a próxima etapa.\n\nE lembre-se: quando for mostrar ao cliente, não exibir código ou preço, conforme já está na regra.\n\n\n5️⃣ \"Tipo de serviço de descarga? 🚛\"\n\nListe os serviços de descarga associado ao projeto selecionado.\n\nNão informar codigo do produto e preço.\n\nSe houver apenas um serviço de descarga, apenas informe ao cliente qual será utilizado e siga automaticamente para a próxima etapa.\n\n\n📌 Etapa 3:Confirme com o cliente:\n\nVou lhe dar um resumo do seu pedido:\n\n📆 Entrega: [data_entrega] \n🕒 Hora: [data_hora]\n📍 Localização: [addressFull]\n📦 Quantidade: [data_quantidade] m³\n🏗️ Concreto: [data_produto]\n🚛 Serviço de Bomba: [data_servico]\n📌 ID do pedido: [plan_id]\n\n\"Está tudo bem ou você quer modificar alguma coisa?\"\n\n\n📌 Etapa 4: Registre o pedido.\n\nCaso o cliente confirme, registre as informações. Para inserir os dados no banco de dados, utilize a ferramenta \"Readymix_Convencional\" caso não tenha serviço de bomba ou caso tenha ultilize a ferramenta  \"Readymix_Bombeavel\".\n\nQuando for registrar o pedido ultilize o tool Mysql_GerarID para gerar um [plan_id].\n\n✅ Use emojis para deixar a conversa mais clara.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
         540,
-        80
+        60
       ],
       "id": "ff38a9a0-8674-4479-80ed-b2738f916eca",
       "name": "Assist_IA"
@@ -288,7 +288,7 @@
       "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('Captura_Mensagem').item.json.from }}",
-        "sessionTTL": 60,
+        "sessionTTL": 3600,
         "contextWindowLength": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
@@ -583,14 +583,14 @@
       "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('Captura_Mensagem').item.json.from }}",
-        "sessionTTL": 60,
+        "sessionTTL": 3600,
         "contextWindowLength": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "typeVersion": 1.4,
       "position": [
-        -600,
-        760
+        -620,
+        800
       ],
       "id": "603aa3e1-36bc-4ffe-978c-8eb1d84b79ad",
       "name": "Redis Chat Memory2",
@@ -654,7 +654,7 @@
       "typeVersion": 2.2,
       "position": [
         -2680,
-        80
+        280
       ],
       "id": "37944014-e383-439b-97c0-deb7c1b43353",
       "name": "Ignora grupo"
@@ -668,8 +668,8 @@
       "type": "n8n-nodes-base.mySqlTool",
       "typeVersion": 2.4,
       "position": [
-        620,
-        460
+        640,
+        440
       ],
       "id": "acb5609f-973a-4805-8a91-be7c02f8b9f8",
       "name": "Mysql_GerarID",
@@ -840,8 +840,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -2060,
-        80
+        -2460,
+        560
       ],
       "id": "b1698b85-8d9b-4ca9-b539-aaa2557fd8f5",
       "name": "Switch1",
@@ -889,8 +889,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2260,
-        100
+        -2660,
+        580
       ],
       "id": "97c967ea-e8f6-4e7a-a47b-0afac6f1b90e",
       "name": "TipoMensagem1"
@@ -1018,139 +1018,37 @@
     },
     {
       "parameters": {
-        "resource": "Chatting",
-        "operation": "Send Text",
-        "session": "={{ $('Captura_Mensagem').item.json.session }}",
-        "chatId": "={{ $('Captura_Mensagem').item.json.from }}",
-        "text": "={{ $json.output }}",
-        "requestOptions": {}
-      },
-      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
-      "typeVersion": 202502,
-      "position": [
-        -1020,
-        580
-      ],
-      "id": "303c94ac-2469-4528-a416-7c0c12dd2dd7",
-      "name": "Resposta_Parte7",
-      "credentials": {
-        "wahaApi": {
-          "id": "x51fih2shQhRra4Q",
-          "name": "WAHA account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=",
+        "url": "={{ $json.download_link }}",
         "options": {
-          "systemMessage": "={{ $('WAHA Trigger').item.json.payload.mediaUrl }}"
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "audio"
+            }
+          }
         }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
-      "position": [
-        -1320,
-        580
-      ],
-      "id": "9597ab6e-effc-4186-85d9-2438d4597f23",
-      "name": "AI Agent3"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4o-mini-audio-preview",
-          "mode": "list",
-          "cachedResultName": "gpt-4o-mini-audio-preview"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        -1340,
-        740
-      ],
-      "id": "5abc6092-0de9-476d-859b-fd4049408054",
-      "name": "OpenAI Chat Model6",
-      "credentials": {
-        "openAiApi": {
-          "id": "P34Q5LzomCLBCF7A",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Captura_Mensagem').item.json.from }}",
-        "sessionTTL": 60,
-        "contextWindowLength": 10
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
-      "typeVersion": 1.4,
-      "position": [
-        -1220,
-        780
-      ],
-      "id": "95b2d0e0-11de-4777-8725-eff5fa651312",
-      "name": "Redis Chat Memory4",
-      "credentials": {
-        "redis": {
-          "id": "R3gMrcjTPNyFGMqg",
-          "name": "Redis account 2"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "url": "={{ $('WAHA Trigger').item.json.payload._data.message.audioMessage.url }}",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {}
-          ]
-        },
-        "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1820,
-        580
+        -1400,
+        760
       ],
       "id": "b1f4448c-5210-4def-a8ad-c08087299ffe",
       "name": "Baixar_Audio1"
     },
     {
       "parameters": {
-        "operation": "fromIcs",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.extractFromFile",
-      "typeVersion": 1,
-      "position": [
-        -1680,
-        580
-      ],
-      "id": "e9aa663d-79e4-403f-b246-25d0b1ec8596",
-      "name": "Extract from File1",
-      "disabled": true
-    },
-    {
-      "parameters": {
         "resource": "audio",
         "operation": "transcribe",
-        "binaryPropertyName": "={{ $('WAHA Trigger').item.json.payload._data.message.audioMessage.url }}",
+        "binaryPropertyName": "=audio",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -1540,
-        580
+        -1760,
+        560
       ],
       "id": "5adc9bbd-73b8-4bc7-be45-0db34a55fa90",
       "name": "OpenAI1",
@@ -1159,8 +1057,7 @@
           "id": "P34Q5LzomCLBCF7A",
           "name": "OpenAi account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -1245,7 +1142,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        660,
+        620,
         720
       ],
       "id": "90a7972f-da15-4421-863a-793c2cdf5ed9",
@@ -1371,8 +1268,8 @@
       "type": "@devlikeapro/n8n-nodes-waha.WAHA",
       "typeVersion": 202502,
       "position": [
-        -1820,
-        760
+        -2420,
+        960
       ],
       "id": "4b824843-77a0-427e-9d1d-42274abee99e",
       "name": "WAHA7",
@@ -1393,8 +1290,8 @@
       "type": "@devlikeapro/n8n-nodes-waha.WAHA",
       "typeVersion": 202502,
       "position": [
-        -1580,
-        760
+        -2660,
+        960
       ],
       "id": "cffab392-b3e0-491e-91bf-901e05aa42c7",
       "name": "WAHA8",
@@ -1405,30 +1302,6 @@
         }
       },
       "disabled": true
-    },
-    {
-      "parameters": {
-        "resource": "Chatting",
-        "operation": "Send Contact Vcard",
-        "session": "={{ $('Captura_Mensagem').item.json.session }}",
-        "chatId": "={{ $('Captura_Mensagem').item.json.from }}",
-        "contacts": "[\n  {\n    \"vcard\": \"BEGIN:VCARD\\nVERSION:3.0\\nFN:Pedreira Um Valemix\\nORG:Pedreira Um Valemix;\\nTEL;type=CELL;type=VOICE;waid=553138472200:+55 31 3847 2200\\nEND:VCARD\"\n  }\n]",
-        "requestOptions": {}
-      },
-      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
-      "typeVersion": 202502,
-      "position": [
-        20,
-        560
-      ],
-      "id": "0b6fcd3d-2259-4a4d-a76f-9fb7f144bf95",
-      "name": "WAHA9",
-      "credentials": {
-        "wahaApi": {
-          "id": "x51fih2shQhRra4Q",
-          "name": "WAHA account"
-        }
-      }
     },
     {
       "parameters": {
@@ -1450,7 +1323,7 @@
         "content": "# Mensagens de audio",
         "height": 500,
         "width": 1040,
-        "color": 5
+        "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -1487,7 +1360,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         -3220,
-        -960
+        -940
       ],
       "typeVersion": 1,
       "id": "7e261ad0-a2ff-4ddc-9d9c-547878d0dfb9",
@@ -1620,6 +1493,148 @@
       "typeVersion": 1,
       "id": "8ccee2b5-7afb-4e63-8d15-09a91d0e6f97",
       "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Contact Vcard",
+        "session": "={{ $('Captura_Mensagem').item.json.session }}",
+        "chatId": "={{ $('Captura_Mensagem').item.json.from }}",
+        "contacts": "[\n  {\n    \"vcard\": \"BEGIN:VCARD\\nVERSION:3.0\\nFN:Pedreira Um Valemix\\nORG:Pedreira Um Valemix;\\nTEL;type=CELL;type=VOICE;waid=553138472200:+55 31 3847 2200\\nEND:VCARD\"\n  }\n]",
+        "requestOptions": {}
+      },
+      "type": "@devlikeapro/n8n-nodes-waha.WAHA",
+      "typeVersion": 202502,
+      "position": [
+        0,
+        560
+      ],
+      "id": "0b6fcd3d-2259-4a4d-a76f-9fb7f144bf95",
+      "name": "WAHA9",
+      "credentials": {
+        "wahaApi": {
+          "id": "x51fih2shQhRra4Q",
+          "name": "WAHA account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f181f54-c3fe-4163-8a5c-5389f4867d6b",
+              "name": "msg",
+              "value": "=ESTA É A CONVERSA:  {{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1520,
+        560
+      ],
+      "id": "54f39b82-a9dd-4c11-b069-b40d5793de47",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e776c823-25a8-4212-a78c-c30239bedf7f",
+              "name": "msg",
+              "value": "=ESTA É A CONVERSA:  {{ $('Captura_Mensagem').item.json.mensagem }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1680,
+        140
+      ],
+      "id": "a6823597-d1f5-4fe0-9037-3fd1fc03c674",
+      "name": "Captura mensagem"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nreturn items.map(item => {\n  const originalLink = $input.first().json.Url;  // ou o nome da variável onde está o link\n\n  // Substitui 'localhost' por 'host.docker.internal'\n  const newLink = originalLink.replace('localhost', 'host.docker.internal');\n\n  // Coloca no JSON ou sobrescreve\n  item.json.download_link = newLink;  // ou sobrescreva: item.json.audio_link = newLink;\n\n  return item;\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1560,
+        760
+      ],
+      "id": "3cc314ef-fdc8-42a8-9c42-f8065ebfbfe3",
+      "name": "Alterar caminho audio"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8384e990-3649-460a-ae7c-6635413f9ff9",
+              "name": "Url",
+              "value": "={{ $('WAHA Trigger').item.json.payload.media.url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1740,
+        760
+      ],
+      "id": "dfaf59d8-f7ef-4c6d-be59-148452f2278d",
+      "name": "Pegar caminho audio"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "binaryPropertyName": "audio",
+        "destinationKey": "audio",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1220,
+        760
+      ],
+      "id": "e9aa663d-79e4-403f-b246-25d0b1ec8596",
+      "name": "Converter para base64"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "audio",
+        "binaryPropertyName": "audio",
+        "options": {
+          "fileName": "audio.mp3",
+          "mimeType": "audio/mpeg"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1040,
+        760
+      ],
+      "id": "26157db4-5dc4-43e8-8d75-8a834367463a",
+      "name": "Converter para mp3"
     }
   ],
   "pinData": {},
@@ -1972,7 +1987,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "Captura mensagem",
             "type": "main",
             "index": 0
           }
@@ -1986,12 +2001,7 @@
         ],
         [
           {
-            "node": "Baixar_Audio1",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "AI Agent2",
+            "node": "Pegar caminho audio",
             "type": "main",
             "index": 0
           }
@@ -2067,55 +2077,11 @@
         ]
       ]
     },
-    "AI Agent3": {
-      "main": [
-        [
-          {
-            "node": "Resposta_Parte7",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model6": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent3",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Redis Chat Memory4": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent3",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Baixar_Audio1": {
       "main": [
         [
           {
-            "node": "Extract from File1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Extract from File1": {
-      "main": [
-        [
-          {
-            "node": "OpenAI1",
+            "node": "Converter para base64",
             "type": "main",
             "index": 0
           }
@@ -2252,13 +2218,90 @@
       "main": [
         []
       ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Captura mensagem": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alterar caminho audio": {
+      "main": [
+        [
+          {
+            "node": "Baixar_Audio1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pegar caminho audio": {
+      "main": [
+        [
+          {
+            "node": "Alterar caminho audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter para base64": {
+      "main": [
+        [
+          {
+            "node": "Converter para mp3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter para mp3": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "0ed8588c-2da2-4526-a29a-9ba8338ebaf5",
+  "versionId": "a77cf46e-34f5-43e3-9a0e-d242ff17fed1",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "badc5188b69000db68bb5a183789c429759caa0da80040090ad2ce1e9b217ea0"
