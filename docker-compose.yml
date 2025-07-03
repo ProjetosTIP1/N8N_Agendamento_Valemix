@@ -6,7 +6,7 @@ services:
   n8n_file:
     image: n8nio/n8n:latest
     container_name: n8n_file
-    # restart: always
+    restart: always
     ports:
       - "5678:5678"
     environment:
@@ -21,14 +21,15 @@ services:
   waha_file:
     image: devlikeapro/waha:latest
     container_name: waha_file
-    # restart: always
+    restart: always
     ports:
       - "3000:3000"
     environment:
       - WHATSAPP_DEFAULT_ENGINE=NOWEB
       - WHATSAPP_HOOK_EVENTS=message
       # - WHATSAPP_HOOK_URL=${DEPENDENCIA_URL}
-      - WHATSAPP_HOOK_URL=http://host.docker.internal:5678/webhook/64a2de0e-e41b-4597-9610-0d3084570a81/waha
+      # - WHATSAPP_HOOK_URL=http://host.docker.internal:5678/webhook/64a2de0e-e41b-4597-9610-0d3084570a81/waha
+      - WHATSAPP_HOOK_URL=http://192.168.11.15:5678/webhook/64a2de0e-e41b-4597-9610-0d3084570a81/waha
     volumes:
       - waha_tmp:/tmp/
     networks:
@@ -38,7 +39,7 @@ services:
   redis:
     image: redis:latest
     container_name: redis_file
-    # restart: always
+    restart: always
     ports:
       - "6379:6379"
     volumes:

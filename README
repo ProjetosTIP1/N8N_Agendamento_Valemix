@@ -25,7 +25,8 @@
 # adicionar um set para capturar mensagem
 # adicionar os campos session $json.session, from $json.payload.from, mensgem $json.payload.body, id_mensagem $json.payload.id
 
-### adiciona um waha > send seen > credential to connect with > host url > http://host.docker.internal:3000
+### adiciona um waha > send seen > credential to connect with > host url > http://host.docker.internal:3000 
+### se não for local adicionar o ip de onde o container esta rodando
 ### adicionar os campos session $json.session, chat id $json.from, message id $json.id_mensagem e apagar o valor de participant
 
 # para responder mensagem
